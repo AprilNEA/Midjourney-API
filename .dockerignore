@@ -1,0 +1,17 @@
+.git
+.cache
+.idea
+.env*
+log
+test/log
+test/**/log
+.pytest_cache
+.vscode
+*__pycache__*
+data
+test/data
+test/**/data
+
+# pipenv
+Pipfile
+Pipfile.lock
