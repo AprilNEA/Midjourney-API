@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1 align="center">Midjourney API</h1>
+<h1 align="center">MidjourneyIAPI</h1>
 
 [Document](https://midjourney.sku.moe) / [Discord](https://discord.gg/y4vxgqfUW) / [Telegram](https://github.com/AprilNEA/ChatGPT-Admin-Web)
 
@@ -20,7 +20,7 @@
 
 请查看[文档](https://midjourney.sku.moe)
 
-Please see [documentation](https://caw.sku.moe)
+Please see [documentation](https://midjourney.sku.moe)
 
 
 ## Donate 捐赠
