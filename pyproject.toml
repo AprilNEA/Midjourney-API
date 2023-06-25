@@ -1,10 +1,9 @@
 [tool.poetry]
 name = "Midjourney-API"
 version = "0.1.0"
-description = ""
+description = "Best Midjourney API build by FastAPI"
 authors = ["AprilNEA <github@sku.moe>"]
 readme = "README.md"
-packages = [{include = "mjw_backend"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
