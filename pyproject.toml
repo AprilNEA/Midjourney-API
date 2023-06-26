@@ -21,6 +21,11 @@ sqlalchemy = "^2.0.17"
 asyncpg = "^0.27.0"
 
 
+[tool.poetry.group.dev.dependencies]
+alembic = "^1.11.1"
+psycopg2-binary = "^2.9.6"
+black = "^23.3.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

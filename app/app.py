@@ -12,6 +12,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app import schema
 from app.routes import v1_router
 from app.database import db_startup
+from app.middleware import SecretBearer
 
 app = FastAPI(title="Midjourney API", description="", version="0.1.0")
 app.add_middleware(
@@ -93,4 +94,5 @@ app.include_router(
     v1_router,
     prefix="/v1",
     tags=["v1"],
+    dependencies=[Depends(SecretBearer())],
 )

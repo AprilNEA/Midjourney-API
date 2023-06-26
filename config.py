@@ -22,6 +22,8 @@ class Config:
     base_url = os.path.dirname(os.path.abspath(__file__))
     environment = getenv("ENVIRONMENT") if getenv("ENVIRONMENT") else "DEVELOPMENT"
     http_proxy = getenv("HTTP_PROXY")
+    secret = getenv("SECRET")
+    public = getenv("PUBLIC", default=False)
 
     database_url = async_database_url(
         getenv("DATABASE_URL", "sqlite+aiosqlite:///./tmp.db")

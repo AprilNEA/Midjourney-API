@@ -26,6 +26,11 @@ class ImageGeneration(BaseModel):
     picurl: Optional[str]
 
 
+class ImageUVR(BaseModel):
+    index: int
+    trigger_id: str
+
+
 class ImageGenerationResponse(BaseModel):
     message: str = "success"
     trigger_id: str

@@ -1,7 +1,7 @@
 import enum
 from typing import Optional
 from datetime import datetime
-from sqlalchemy import select, func
+from sqlalchemy import select, func, Column, BigInteger
 from sqlalchemy.orm import mapped_column, DeclarativeBase, Mapped
 from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
@@ -18,14 +18,13 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 class TriggerStatus(enum.Enum):
     pending = "pending"
-    start = "start"  # 首次触发 MessageType.chat_input_command
-    generating = "generating"  # 生成中
-    end = "end"  # 生成结束 MessageType.default
-    error = "error"  # 生成错误
-    banned = "banned"  # 提示词被禁
+    generating = "generating"
 
-    text = "text"  # 文本内容：describe
-    verify = "verify"  # 需人工验证
+    success = "success"
+    failed = "failed"
+
+    banned = "banned"
+    verify = "verify"
 
 
 class TriggerType(enum.Enum):
@@ -40,19 +39,24 @@ class TriggerType(enum.Enum):
 class Trigger(Base):
     __tablename__ = "trigger"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    id = Column(BigInteger, primary_key=True, index=True)
     type: Mapped[TriggerType] = mapped_column(default=TriggerType.generate, index=True)
     status: Mapped[TriggerStatus] = mapped_column(
         default=TriggerStatus.pending, index=True
     )
     percent: Mapped[int] = mapped_column(default=0)
-    prompt: Mapped[str] = mapped_column(index=True)
+    payload: Mapped[str] = mapped_column(index=True)
+
     filename: Mapped[str] = mapped_column(nullable=True, index=True)
-    message_id: Mapped[int] = mapped_column(nullable=True, index=True)
     image_url: Mapped[str] = mapped_column(nullable=True)
 
+    message_id: Mapped[str] = mapped_column(nullable=True, index=True)
+    message_hash: Mapped[str] = mapped_column(nullable=True, index=True)
+
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(onupdate=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        server_default=func.now(), onupdate=func.now()
+    )
 
 
 class TriggerDAL:
@@ -85,7 +89,7 @@ class TriggerDAL:
 
     async def finish(self, _id: int, **kwargs):
         trigger = await self.get(_id)
-        trigger.status = TriggerStatus.end
+        trigger.status = TriggerStatus.success
         trigger.percent = 100
         if trigger.type == TriggerType.generate:
             trigger.filename = kwargs.get("filename")
